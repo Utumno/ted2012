@@ -1,0 +1,23 @@
+// STEPS 1-5 DETAIL HOW I SET UP THE JUNCTIONS TO THE SERVER CONFIG INSIDE THE conf/ PROJECT FOLDER
+// YOU MAY NEED TO DO SOME OF IT - *SOME* - ESPECIALLY THE JUNCTION PART. FOR THE REST JUST COPY THE
+// SERVER CONFIG FILES IN YOUR SERVERS\TOMCAT...\ ECLIPSE PROJECT
+
+1. Create a new server instance. See New server -- workbench default JRE ! 2012.10.26.jpg. As seen there, I am based on tomcat 7.0.32
+2. Create a junction pointing from my ted2012/conf folder to Servers/Tomcat v7.0 Server at localhost-config. See tomcat_conf_junction.bat :
+
+PATH_TO_ECLIPSE_SERVER_CONFIG : C:\Dropbox\javaEE\Servers\Tomcat v7.0 Server at localhost-config
+PATH_TO_PROJECT_SERVER_CONFIG  : C:\Dropbox\javaEE\ted2012\conf
+C:\Dropbox\javaEE\ted2012\conf>junction "C:\Dropbox\javaEE\ted2012\conf\Servers_eclipse_project_tomcat7_conf" "C:\Dropbox\javaEE\Servers\Tomcat v7.0 Server at localhost-config"
+Created: C:\Dropbox\javaEE\ted2012\conf\Servers_eclipse_project_tomcat7_conf
+Targetted at: C:\Dropbox\javaEE\Servers\Tomcat v7.0 Server at localhost-config
+
+3. See Vanilla Tomcat v7.0.32 settings commit.
+4. Add project to server - Add_ted2012_to_server.jpg - see Add project to server commit.
+5. Disable SSL - see : Disable SSL commit.
+
+///
+
+6. Add mysql-connector-java-5.1.22-bin.jar to the tomcat lib folder.
+7. Create the db : DB_SCRIPT.sql. You must add the *YOUR* DB password, username, url etc in WebContent\META-INF\context.xml
+Default admin : username=ted2012  password=ted2012
+8. At this point if you run the project in eclipse everything shoulw work - INCLUDING creating a user/project with GREEK username/name and viewing his/hers/its details.

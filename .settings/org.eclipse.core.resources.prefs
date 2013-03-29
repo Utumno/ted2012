@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/jsp/include/bottom.jsp=UTF-8
+encoding//WebContent/WEB-INF/jsp/include/error_begin.jsp=UTF-8
+encoding//WebContent/WEB-INF/jsp/include/staff.jsp=UTF-8
+encoding//WebContent/WEB-INF/jsp/index.jsp=UTF-8
+encoding//WebContent/WEB-INF/jsp/register.jsp=UTF-8
+encoding//src/com/ted/controller/DeleteUserController.java=UTF-8
+encoding//src/com/ted/controller/RegisterController.java=UTF-8
