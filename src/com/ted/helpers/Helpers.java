@@ -35,7 +35,9 @@ public final class Helpers {
 		}
 		System.out.println("decode - request.getBytes(\"UTF-8\"):"
 				+ new String(parameter.getBytes(CHARSET_FOR_URL_ENCODING)));
-		return URLDecoder.decode(new String(parameter.getBytes("iso-8859-1")),
+		// return URLDecoder.decode(new String(parameter.getBytes("iso-8859-1"),
+		// CHARSET_FOR_URL_ENCODING), CHARSET_FOR_URL_ENCODING);
+		return new String(parameter.getBytes("iso-8859-1"),
 				CHARSET_FOR_URL_ENCODING);
 	}
 }
