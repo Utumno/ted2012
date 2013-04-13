@@ -1,12 +1,12 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <%@ taglib prefix="u" uri="functions" %>
-<title>Λίστα Έργων</title>
+<title>Project List</title>
 <%@ include file="include/head.jsp"%>
 <%@ include file="include/admin_menu.jsp"%>
-<h1>Λίστα Έργων</h1>
+<h1>Project List</h1>
 <p>
-	<a href="createproject">Δημιουργία νέου Έργου</a>
+	<a href="createproject">Create project</a>
 </p>
 <h3>Έργα</h3>
 <%@ include file="include/error_begin.jsp"%>

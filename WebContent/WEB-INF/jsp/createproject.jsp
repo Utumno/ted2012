@@ -136,7 +136,7 @@
 			</select>
 			</td>
 			<td><input type="submit" name="addStaff" id="addStaff"
-				value="Προσθήκη Προσωπικού" /></td>
+				value="Add Staff" /></td>
 			<%
 				} else {
 			%>
@@ -155,7 +155,7 @@
 		<tr>
 			<td>&nbsp;</td>
 			<td><input type="submit" name="createProject" id="createProject"
-				value="Δημιουργία Έργου" /></td>
+				value="Create Project" /></td>
 			<td>&nbsp;</td>
 		</tr>
 	</table>

@@ -13,7 +13,7 @@
 <form id="form2" name="form2" method="post" action="projectlist">
 	<p>
 		<input type="submit" name="projectlist" id="projectlist"
-			value="Λίστα Έργων" />
+			value="Project List" />
 	</p>
 </form>
 <h1>&nbsp;</h1>

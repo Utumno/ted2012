@@ -14,7 +14,7 @@
 					</c:forEach>
 			</select></td>
 			<td><input type="submit" name="addStaff" id="addStaff"
-				value="Προσθήκη Προσωπικού" /></td>
+				value="Add Staff" /></td>
 		</c:otherwise>
 	</c:choose>
 	<td>
