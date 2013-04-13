@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.joda.time.DateTime;
 
@@ -25,7 +26,6 @@ public class ProjectDAO {
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
-
 		try {
 			conn.setAutoCommit(false);
 			for (Comment com : job.getComments()) {
@@ -83,13 +83,12 @@ public class ProjectDAO {
 		return true;
 	}
 
-	public ArrayList<Job> getJobsForProject(String projectName)
-			throws DBExFailure {
+	public List<Job> getJobsForProject(String projectName) throws DBExFailure {
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
 		final String query = "SELECT * FROM jobs INNER JOIN projhasjobs WHERE id = job AND project = ?";
-		ArrayList<Job> allJobs = new ArrayList<>();
+		List<Job> allJobs = new ArrayList<>();
 		try {
 			statement = conn.prepareStatement(query);
 			int i = 0;
@@ -118,13 +117,12 @@ public class ProjectDAO {
 
 	public Project insert(Project project) throws DBExFailure,
 			DBExProjectExists {
-		ArrayList<User> staff = project.getStaff();
+		List<User> staff = project.getStaff();
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
 		try {
 			conn.setAutoCommit(false);
-
 			final String queryProjects = "INSERT INTO projects (name, description, public, manager) VALUES (?,?,?,?)";
 			final String queryProjHasStaff = "INSERT INTO projhasstaff (project, user) VALUES (?,?)";
 			statement = conn.prepareStatement(queryProjects);
@@ -136,7 +134,6 @@ public class ProjectDAO {
 			statement.setString(++i, project.getManager().getUsername());
 			System.out.println("ProjectDAO.insert() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryProjHasStaff);
 			for (User user : staff) {
 				i = 0;
@@ -166,7 +163,7 @@ public class ProjectDAO {
 	}
 
 	public Project update(Project project) throws DBExFailure {
-		ArrayList<User> staff = project.getStaff();
+		List<User> staff = project.getStaff();
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
@@ -183,13 +180,11 @@ public class ProjectDAO {
 			statement.setString(++i, project.getName());
 			System.out.println("ProjectDAO.update() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryDeleteProjHasStaff);
 			i = 0;
 			statement.setString(++i, project.getName());
 			System.out.println("ProjectDAO.delete() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryProjHasStaff);
 			for (User user : staff) {
 				i = 0;
@@ -214,8 +209,8 @@ public class ProjectDAO {
 		return project;
 	}
 
-	public ArrayList<String> getAllProjectNames() throws DBExFailure {
-		ArrayList<String> pList = null;
+	public List<String> getAllProjectNames() throws DBExFailure {
+		List<String> pList = null;
 		Connection conn = DBConnectionPool.getConnection();
 		Statement statement = null;
 		ResultSet set = null;
@@ -237,9 +232,9 @@ public class ProjectDAO {
 		return pList;
 	}
 
-	public ArrayList<String> getAllProjectNamesForUser(String username)
+	public List<String> getAllProjectNamesForUser(String username)
 			throws DBExFailure {
-		ArrayList<String> pList = null;
+		List<String> pList = null;
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
@@ -263,15 +258,14 @@ public class ProjectDAO {
 		return pList;
 	}
 
-	public ArrayList<String> getAllProjectNames(boolean isPublic)
-			throws DBExFailure {
+	public List<String> getAllProjectNames(boolean isPublic) throws DBExFailure {
 		Integer publik = null;
 		if (isPublic) {
 			publik = 1;
 		} else {
 			publik = 0;
 		}
-		ArrayList<String> pList = null;
+		List<String> pList = null;
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
@@ -358,7 +352,7 @@ public class ProjectDAO {
 							.getString("manager")));
 					proj.setName(set.getString("name"));
 					proj.setPublik(set.getBoolean("public"));
-					ArrayList<User> staff = new ArrayList<User>();
+					List<User> staff = new ArrayList<User>();
 					proj.setStaff(staff);
 					proj.setJobs(null);
 				}
@@ -392,8 +386,7 @@ public class ProjectDAO {
 							.getString("manager")));
 					proj.setName(set.getString("name"));
 					proj.setPublik(set.getBoolean("public"));
-
-					ArrayList<User> staff = new ArrayList<User>();
+					List<User> staff = new ArrayList<User>();
 					statement = conn.prepareStatement(query2);
 					statement.setString(1, name);
 					set = statement.executeQuery();
@@ -403,8 +396,7 @@ public class ProjectDAO {
 						staff.add(a);
 					}
 					proj.setStaff(staff);
-
-					ArrayList<Job> jobs = new ArrayList<Job>();
+					List<Job> jobs = new ArrayList<Job>();
 					statement = conn.prepareStatement(query3);
 					statement.setString(1, name);
 					set = statement.executeQuery();
@@ -474,7 +466,6 @@ public class ProjectDAO {
 			statement.setString(i, proj);
 			System.out.println("ProjectDAO.delete1() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryProjects);
 			statement.setString(i, proj);
 			System.out.println("ProjectDAO.delete2() : " + statement);
@@ -497,7 +488,6 @@ public class ProjectDAO {
 			statement.setString(i, proj);
 			System.out.println("ProjectDAO.delete1() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryProjects);
 			statement.setString(i, proj);
 			System.out.println("ProjectDAO.delete2() : " + statement);
@@ -517,7 +507,7 @@ public class ProjectDAO {
 		return jobsDAO.existsJobWithSameNameForProject(project, name);
 	}
 
-	public ArrayList<String> getAllJobNamesForUser(String username)
+	public List<String> getAllJobNamesForUser(String username)
 			throws DBExFailure {
 		return jobsDAO.getAllJobNamesForUser(username);
 	}
@@ -549,12 +539,11 @@ public class ProjectDAO {
 		return jobsDAO.deleteCommentsOfUser(username);
 	}
 
-	public ArrayList<Comment> getCommentsOfUser(String username)
-			throws DBExFailure {
+	public List<Comment> getCommentsOfUser(String username) throws DBExFailure {
 		return jobsDAO.getCommentsOfUser(username);
 	}
 
-	public ArrayList<Comment> getCommentsOfJob(Integer id) throws DBExFailure {
+	public List<Comment> getCommentsOfJob(Integer id) throws DBExFailure {
 		return jobsDAO.getCommentsOfJob(id);
 	}
 
@@ -566,11 +555,11 @@ public class ProjectDAO {
 		return jobsDAO.getJobWithId(id);
 	}
 
-	public ArrayList<Job> getJobsForUser(String username) throws DBExFailure {
+	public List<Job> getJobsForUser(String username) throws DBExFailure {
 		return jobsDAO.getJobsForUser(username);
 	}
 
-	public ArrayList<Job> getAllJobsForUserInProject(String username,
+	public List<Job> getAllJobsForUserInProject(String username,
 			String projectName) throws DBExFailure {
 		return jobsDAO.getJobsForUserInProject(username, projectName);
 	}
@@ -586,6 +575,7 @@ public class ProjectDAO {
 }
 
 class JobsDAO {
+
 	private CommentsDAO commentDAO = new CommentsDAO();
 
 	public Job update(Job job) throws DBExFailure {
@@ -614,15 +604,13 @@ class JobsDAO {
 			statement.setInt(++i, job.getId());
 			System.out.println("ProjectDAO.update() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryDeleteJobHasStaff);
 			i = 0;
 			statement.setInt(++i, job.getId());
 			System.out.println("ProjectDAO.delete() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryJobHasStaff);
-			ArrayList<User> jobUsers = job.getJobStaff();
+			List<User> jobUsers = job.getJobStaff();
 			for (User user : jobUsers) {
 				i = 0;
 				statement.setInt(++i, job.getId());
@@ -666,12 +654,12 @@ class JobsDAO {
 		}
 	}
 
-	public ArrayList<Job> getJobsForUser(String username) throws DBExFailure {
+	public List<Job> getJobsForUser(String username) throws DBExFailure {
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
 		final String query = "SELECT * FROM jobs INNER JOIN jobhasstaff WHERE id = jobs AND user = ?";
-		ArrayList<Job> allJobs = new ArrayList<>();
+		List<Job> allJobs = new ArrayList<>();
 		try {
 			statement = conn.prepareStatement(query);
 			int i = 0;
@@ -698,15 +686,14 @@ class JobsDAO {
 		return allJobs;
 	}
 
-	public ArrayList<Job> getJobsForUserInProject(String username,
-			String projectName) throws DBExFailure {
-
+	public List<Job> getJobsForUserInProject(String username, String projectName)
+			throws DBExFailure {
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
 		final String query = "SELECT * FROM jobs INNER JOIN projhasjobs INNER JOIN jobhasstaff "
 				+ "WHERE id = job AND jobs = id AND user = ? AND project = ?";
-		ArrayList<Job> allJobs = new ArrayList<>();
+		List<Job> allJobs = new ArrayList<>();
 		try {
 			statement = conn.prepareStatement(query);
 			int i = 0;
@@ -734,9 +721,9 @@ class JobsDAO {
 		return allJobs;
 	}
 
-	public ArrayList<String> getAllJobNamesForUser(String username)
+	public List<String> getAllJobNamesForUser(String username)
 			throws DBExFailure {
-		ArrayList<String> jList = null;
+		List<String> jList = null;
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
@@ -771,8 +758,7 @@ class JobsDAO {
 			statement.setString(++i, p.getName());
 			statement.setString(++i, jobname);
 			set = statement.executeQuery();
-			if (set.next())
-				return true;
+			if (set.next()) return true;
 		} catch (SQLException e) {
 			throw new DBExFailure(e);
 		} finally {
@@ -812,15 +798,13 @@ class JobsDAO {
 			set.next();
 			int id = set.getInt(1);
 			job.setId(id);
-
 			statement = conn.prepareStatement(queryProjectHasJobs);
 			i = 0;
 			statement.setString(++i, project.getName());
 			statement.setInt(++i, id);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryJobHasStaff);
-			ArrayList<User> jobUsers = job.getJobStaff();
+			List<User> jobUsers = job.getJobStaff();
 			for (User user : jobUsers) {
 				i = 0;
 				statement.setString(++i, user.getUsername());
@@ -861,12 +845,10 @@ class JobsDAO {
 			statement.setInt(i, job);
 			System.out.println("JobDAO.delete1() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryProjhasjobs);
 			statement.setInt(i, job);
 			System.out.println("JobDAO.delete2() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryJobs);
 			statement.setInt(i, job);
 			System.out.println("JobDAO.delete3() : " + statement);
@@ -890,12 +872,10 @@ class JobsDAO {
 			statement.setInt(i, job);
 			System.out.println("JobDAO.delete1() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryProjhasjobs);
 			statement.setInt(i, job);
 			System.out.println("JobDAO.delete2() : " + statement);
 			statement.executeUpdate();
-
 			statement = conn.prepareStatement(queryJobs);
 			statement.setInt(i, job);
 			System.out.println("JobDAO.delete3() : " + statement);
@@ -954,12 +934,11 @@ class JobsDAO {
 		return commentDAO.deleteCommentsOfUser(username);
 	}
 
-	public ArrayList<Comment> getCommentsOfUser(String username)
-			throws DBExFailure {
+	public List<Comment> getCommentsOfUser(String username) throws DBExFailure {
 		return commentDAO.getCommentsOfUser(username);
 	}
 
-	public ArrayList<Comment> getCommentsOfJob(Integer id) throws DBExFailure {
+	public List<Comment> getCommentsOfJob(Integer id) throws DBExFailure {
 		return commentDAO.getCommentsOfJob(id);
 	}
 
@@ -969,6 +948,7 @@ class JobsDAO {
 }
 
 class CommentsDAO {
+
 	private UserDAO userDAO = new UserDAO();
 
 	public Comment insert(String comment, int idJob, String writerUsername)
@@ -1055,12 +1035,11 @@ class CommentsDAO {
 		return true;
 	}
 
-	public ArrayList<Comment> getCommentsOfUser(String username)
-			throws DBExFailure {
+	public List<Comment> getCommentsOfUser(String username) throws DBExFailure {
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
-		ArrayList<Comment> allComments = new ArrayList<Comment>();
+		List<Comment> allComments = new ArrayList<Comment>();
 		final String queryProjects = "SELECT * from comments where writer = ?";
 		try {
 			statement = conn.prepareStatement(queryProjects);
@@ -1083,11 +1062,11 @@ class CommentsDAO {
 		return allComments;
 	}
 
-	public ArrayList<Comment> getCommentsOfJob(Integer id) throws DBExFailure {
+	public List<Comment> getCommentsOfJob(Integer id) throws DBExFailure {
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
-		ArrayList<Comment> allComments = new ArrayList<Comment>();
+		List<Comment> allComments = new ArrayList<Comment>();
 		final String queryProjects = "SELECT * from comments where job = ?";
 		try {
 			statement = conn.prepareStatement(queryProjects);
@@ -1135,5 +1114,4 @@ class CommentsDAO {
 		}
 		return comment;
 	}
-
 }

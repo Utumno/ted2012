@@ -6,14 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.ted.domain.User;
 import com.ted.domain.User.RolesENUM;
 
 public class UserDAO {
 
-	public ArrayList<User> findAll(RolesENUM role) throws DBExFailure {
-		ArrayList<User> uList = null;
+	public List<User> findAll(RolesENUM role) throws DBExFailure {
+		List<User> uList = null;
 		Connection conn = DBConnectionPool.getConnection();
 		Statement statement = null;
 		ResultSet set = null;
@@ -46,8 +47,8 @@ public class UserDAO {
 		return uList;
 	}
 
-	public ArrayList<User> findAllForProject(String project) throws DBExFailure {
-		ArrayList<User> uList = null;
+	public List<User> findAllForProject(String project) throws DBExFailure {
+		List<User> uList = null;
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
@@ -71,8 +72,8 @@ public class UserDAO {
 		return uList;
 	}
 
-	public ArrayList<User> findAllForJob(Integer id) throws DBExFailure {
-		ArrayList<User> uList = null;
+	public List<User> findAllForJob(Integer id) throws DBExFailure {
+		List<User> uList = null;
 		Connection conn = DBConnectionPool.getConnection();
 		PreparedStatement statement = null;
 		ResultSet set = null;
@@ -96,8 +97,8 @@ public class UserDAO {
 		return uList;
 	}
 
-	public ArrayList<User> findAllExceptRole(RolesENUM role) throws DBExFailure {
-		ArrayList<User> uList = null;
+	public List<User> findAllExceptRole(RolesENUM role) throws DBExFailure {
+		List<User> uList = null;
 		Connection conn = DBConnectionPool.getConnection();
 		Statement statement = null;
 		ResultSet set = null;
@@ -139,7 +140,6 @@ public class UserDAO {
 			try {
 				statement = conn.prepareStatement(query);
 				statement.setString(1, username);
-				System.out.println("ελληναρα");
 				System.out.println(statement);
 				set = statement.executeQuery();
 				if (set.next()) {
@@ -167,7 +167,6 @@ public class UserDAO {
 		PreparedStatement statement = null;
 		ResultSet set = null;
 		final String query = "SELECT * FROM users WHERE username=?";
-
 		if (conn != null) {
 			try {
 				statement = conn.prepareStatement(query);
@@ -286,7 +285,6 @@ public class UserDAO {
 		// final String query =
 		// "SELECT * FROM users WHERE username =? AND password=? LIMIT 1";
 		final String query = "SELECT * FROM users WHERE username =? LIMIT 1";
-
 		User user = null;
 		try {
 			statement = conn.prepareStatement(query);
@@ -328,5 +326,4 @@ public class UserDAO {
 			DBConnectionPool.closeResources(set, statement, conn);
 		}
 	}
-
 }

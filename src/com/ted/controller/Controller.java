@@ -1,6 +1,6 @@
 package com.ted.controller;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,9 +17,7 @@ import org.slf4j.LoggerFactory;
 public class Controller extends HttpServlet implements Addresses {
 
 	private static final long serialVersionUID = -3909058201424153832L;
-
 	protected static ServletContext sc;
-
 	private static final String DATE_FORMAT = "yyyy/MM/dd";
 	private static final String SUCCESS_MESSAGES_MAP = "messages";
 	protected Logger log;
@@ -41,9 +39,8 @@ public class Controller extends HttpServlet implements Addresses {
 	// mhnymata
 	protected String messageKey(HttpServletRequest request, String message) {
 		HttpSession session = request.getSession(false);
-		if (session == null)
-			return null; // should not happen
-		HashMap<String, String> m = (HashMap<String, String>) session
+		if (session == null) return null; // should not happen
+		Map<String, String> m = (Map<String, String>) session
 				.getAttribute(SUCCESS_MESSAGES_MAP);
 		String rand;
 		synchronized (m) {

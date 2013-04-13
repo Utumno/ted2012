@@ -3,7 +3,7 @@ package com.ted.service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.List;
 
 import com.ted.dao.DBExFailure;
 import com.ted.dao.DBExJobExists;
@@ -14,6 +14,7 @@ import com.ted.domain.Project.Job;
 import com.ted.domain.Project.Job.Comment;
 
 public class ProjectService {
+
 	private ProjectDAO projectDAO = new ProjectDAO();
 
 	public Project createProject(Project project) throws ServiceExDBFailure,
@@ -37,7 +38,7 @@ public class ProjectService {
 		}
 	}
 
-	public ArrayList<Comment> getCommentsOfUser(String username)
+	public List<Comment> getCommentsOfUser(String username)
 			throws ServiceExDBFailure {
 		try {
 			return projectDAO.getCommentsOfUser(username);
@@ -46,8 +47,7 @@ public class ProjectService {
 		}
 	}
 
-	public ArrayList<Comment> getCommentsOfJob(Integer id)
-			throws ServiceExDBFailure {
+	public List<Comment> getCommentsOfJob(Integer id) throws ServiceExDBFailure {
 		try {
 			return projectDAO.getCommentsOfJob(id);
 		} catch (DBExFailure e) {
@@ -63,7 +63,7 @@ public class ProjectService {
 		}
 	}
 
-	public ArrayList<Job> getJobsForProject(String project)
+	public List<Job> getJobsForProject(String project)
 			throws ServiceExDBFailure {
 		try {
 			return projectDAO.getJobsForProject(project);
@@ -72,8 +72,7 @@ public class ProjectService {
 		}
 	}
 
-	public ArrayList<Job> getJobsForUser(String username)
-			throws ServiceExDBFailure {
+	public List<Job> getJobsForUser(String username) throws ServiceExDBFailure {
 		try {
 			return projectDAO.getJobsForUser(username);
 		} catch (DBExFailure e) {
@@ -128,7 +127,6 @@ public class ProjectService {
 		} catch (DBExFailure e) {
 			throw new ServiceExDBFailure(e);
 		}
-
 	}
 
 	public Project getProjectInfoByName(String projectName)
@@ -172,7 +170,7 @@ public class ProjectService {
 		return project;
 	}
 
-	public ArrayList<String> getAllProjectNamesForUser(String username)
+	public List<String> getAllProjectNamesForUser(String username)
 			throws ServiceExDBFailure {
 		try {
 			if (username == null) {
@@ -185,7 +183,7 @@ public class ProjectService {
 		}
 	}
 
-	public ArrayList<String> getAllProjectNames(boolean isPublic)
+	public List<String> getAllProjectNames(boolean isPublic)
 			throws ServiceExDBFailure {
 		try {
 			return projectDAO.getAllProjectNames(isPublic);
@@ -194,7 +192,7 @@ public class ProjectService {
 		}
 	}
 
-	public ArrayList<String> getAllJobNamesForUser(String username)
+	public List<String> getAllJobNamesForUser(String username)
 			throws ServiceExDBFailure {
 		try {
 			return projectDAO.getAllJobNamesForUser(username);
@@ -203,7 +201,7 @@ public class ProjectService {
 		}
 	}
 
-	public ArrayList<Job> getAllJobsForUserInProject(String username,
+	public List<Job> getAllJobsForUserInProject(String username,
 			String projectName) throws ServiceExDBFailure {
 		try {
 			return projectDAO.getAllJobsForUserInProject(username, projectName);

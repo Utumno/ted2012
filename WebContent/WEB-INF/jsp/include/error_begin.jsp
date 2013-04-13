@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <% if(request.getAttribute("ErrorString") != null){ %>
 Υπήρξε λάθος : ${requestScope.ErrorString}
 <%} else { %>
@@ -8,7 +8,7 @@
 		<%
 		HttpSession ses = (HttpSession)  request.getSession(false);
 		if(ses != null){
-			HashMap<String, String> m = (HashMap<String, String>) ses.getAttribute("messages");
+			Map<String, String> m = (Map<String, String>) ses.getAttribute("messages");
 			if(m != null){ %>
 		<%=m.get(request.getParameter("r")) %>
 		<%}

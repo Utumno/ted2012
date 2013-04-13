@@ -2,6 +2,7 @@ package com.ted.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +28,6 @@ public class DeleteJobController extends Controller {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		String projNameOfJobToBeDeleted = null;
 		String redirectURIIfNotDeleting = null;
 		String redirectURIAfterDeleting = null;
@@ -74,7 +74,7 @@ public class DeleteJobController extends Controller {
 			projNameOfJobToBeDeleted = projectService
 					.getProjectNameOfJob(idOfJobToDelete);
 			if (projNameOfJobToBeDeleted != null) {
-				ArrayList<Job> jobsToBeDeleted = new ArrayList<>();
+				List<Job> jobsToBeDeleted = new ArrayList<>();
 				for (String jobId : jobsIdsToDelete) {
 					idOfJobToDelete = Integer.parseInt(jobId);
 					Job job = projectService.getJobWithId(idOfJobToDelete);
@@ -112,7 +112,6 @@ public class DeleteJobController extends Controller {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		String projNameOfJobToBeDeleted = null;
 		try {
 			Integer idOfJobToDelete = Integer.parseInt(request
@@ -128,7 +127,7 @@ public class DeleteJobController extends Controller {
 						.getJobWithId(idOfJobToDelete);
 				String message = confirmationOfSingleJobDeletion;
 				request.setAttribute("confirmationMessage", message);
-				ArrayList<Job> jobsToBeDeleted = new ArrayList<>();
+				List<Job> jobsToBeDeleted = new ArrayList<>();
 				jobsToBeDeleted.add(jobToBeDeleted);
 				request.setAttribute("arrayOfObjectsToDelete", jobsToBeDeleted);
 				String redirectURIIfNotDeleting = Helpers.encodeUri("",

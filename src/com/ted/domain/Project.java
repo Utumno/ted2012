@@ -1,6 +1,7 @@
 package com.ted.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.joda.time.DateTime;
 
@@ -8,6 +9,7 @@ import com.ted.service.ServiceExDBFailure;
 import com.ted.service.UserService;
 
 public class Project {
+
 	public static enum StatesENUM {
 		NEW, STARTED, DONE
 	}
@@ -16,8 +18,8 @@ public class Project {
 	private String description;
 	private boolean publik;
 	private User manager;
-	private ArrayList<User> staff;
-	private ArrayList<Job> jobs;
+	private List<User> staff;
+	private List<Job> jobs;
 
 	public Project() {
 		this.staff = new ArrayList<User>();
@@ -25,12 +27,13 @@ public class Project {
 	}
 
 	public class Job {
+
 		private String name;
 		private String description;
 		private DateTime startDate;
 		private DateTime endDate;
-		private ArrayList<User> jobStaff;
-		private ArrayList<Comment> comments;
+		private List<User> jobStaff;
+		private List<Comment> comments;
 		private int id;
 		private StatesENUM state;
 
@@ -71,19 +74,19 @@ public class Project {
 			this.endDate = endDate;
 		}
 
-		public ArrayList<User> getJobStaff() {
+		public List<User> getJobStaff() {
 			return jobStaff;
 		}
 
-		public void setJobStaff(ArrayList<User> jobStaff) {
-			this.jobStaff = jobStaff;
+		public void setJobStaff(List<User> staff) {
+			this.jobStaff = staff;
 		}
 
-		public ArrayList<Comment> getComments() {
+		public List<Comment> getComments() {
 			return comments;
 		}
 
-		public void setComments(ArrayList<Comment> comments) {
+		public void setComments(List<Comment> comments) {
 			this.comments = comments;
 		}
 
@@ -104,6 +107,7 @@ public class Project {
 		}
 
 		public class Comment {
+
 			Integer id;
 			private String comment;
 			private User commenter;
@@ -137,7 +141,6 @@ public class Project {
 				this.commenter = new UserService()
 						.getUserWithUsername(commenter);
 			}
-
 		}
 	}
 
@@ -181,19 +184,19 @@ public class Project {
 		this.manager = manager;
 	}
 
-	public ArrayList<User> getStaff() {
+	public List<User> getStaff() {
 		return staff;
 	}
 
-	public void setStaff(ArrayList<User> staff) {
-		this.staff = staff;
+	public void setStaff(List<User> staff2) {
+		this.staff = staff2;
 	}
 
-	public ArrayList<Job> getJobs() {
+	public List<Job> getJobs() {
 		return jobs;
 	}
 
-	public void setJobs(ArrayList<Job> jobs) {
-		this.jobs = jobs;
+	public void setJobs(List<Job> jobs2) {
+		this.jobs = jobs2;
 	}
 }

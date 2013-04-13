@@ -2,6 +2,7 @@ package com.ted.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,7 +39,6 @@ public class CreateJobController extends Controller {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		// Briskw project kai 8etw attributes gia to jsp
 		Project enclosingProject = null;
 		try {
@@ -50,50 +50,42 @@ public class CreateJobController extends Controller {
 			return;
 		}
 		request.setAttribute("project", request.getParameter("project"));
-
 		String name = null, description = null, staffMember = null;
 		DateTime startDate = null, endDate = null;
 		String[] addedStaff1 = request.getParameterValues("added");
-		ArrayList<String> addedStaff = new ArrayList<>();
+		List<String> addedStaff = new ArrayList<>();
 		if (addedStaff1 != null) {
 			for (int i = 0; i < addedStaff1.length; ++i) {
 				addedStaff.add(addedStaff1[i]);
 			}
 		}
-
 		name = request.getParameter("name");
 		description = request.getParameter("description");
 		staffMember = request.getParameter("staffMember");
 		String startDateStr = request.getParameter("startDate");
 		String endDateStr = request.getParameter("endDate");
 		String deletedStaffMember = request.getParameter("deletedStaffMember");
-
 		// AN PATH8HKE TO DHMIOYRGIA
 		if (request.getParameter("createJob") != null) {
 			boolean error = false;
-
 			// elegxos twn pediwn
 			if (Validators.isNullOrEmpty(name)) {
 				request.setAttribute("emptyName", true);
 				error = true;
-			} else
-				try {
-					if (projectService.jobExistsWithThisNameForThisProject(
-							enclosingProject, name)) {
-						request.setAttribute("jobNameExists", true);
-						error = true;
-					}
-				} catch (ServiceExDBFailure e) {
-					log.debug("CreateJobController::doPost", e);
-					request.setAttribute("StringErrorInJobCreation",
-							e.getMessage());
+			} else try {
+				if (projectService.jobExistsWithThisNameForThisProject(
+						enclosingProject, name)) {
+					request.setAttribute("jobNameExists", true);
+					error = true;
 				}
-
+			} catch (ServiceExDBFailure e) {
+				log.debug("CreateJobController::doPost", e);
+				request.setAttribute("StringErrorInJobCreation", e.getMessage());
+			}
 			if (Validators.isNullOrEmpty(description)) {
 				request.setAttribute("emptyDescription", true);
 				error = true;
 			}
-
 			if (Validators.isNullOrEmpty(startDateStr)) {
 				request.setAttribute("emptyStartDate", true);
 				error = true;
@@ -112,7 +104,6 @@ public class CreateJobController extends Controller {
 					startDate = null;
 				}
 			}
-
 			if (Validators.isNullOrEmpty(endDateStr)) {
 				request.setAttribute("emptyEndDate", true);
 				error = true;
@@ -131,12 +122,10 @@ public class CreateJobController extends Controller {
 					error = true;
 				}
 			}
-
 			if (addedStaff.isEmpty()) {
 				request.setAttribute("emptyStaff", true);
 				error = true;
 			}
-
 			// an ola kala...apo8hkeush tou job
 			if (!error) {
 				Job job = enclosingProject.new Job();
@@ -145,7 +134,7 @@ public class CreateJobController extends Controller {
 				job.setStartDate(startDate);
 				job.setEndDate(endDate);
 				try {
-					ArrayList<User> staff = getUsersFromUsernames(addedStaff);
+					List<User> staff = getUsersFromUsernames(addedStaff);
 					job.setJobStaff(staff);
 					projectService.addJob(enclosingProject, job);
 					response.sendRedirect(Helpers.encodeUri(PROJECT_SERVLET
@@ -157,7 +146,6 @@ public class CreateJobController extends Controller {
 				}
 			}
 		}
-
 		request.setAttribute("name", name);
 		request.setAttribute("description", description);
 		request.setAttribute("startDate", startDateStr);
@@ -168,9 +156,8 @@ public class CreateJobController extends Controller {
 	}
 
 	private void helperJobArrays(HttpServletRequest request,
-			String staffMember, ArrayList<String> addedStaff,
+			String staffMember, List<String> addedStaff,
 			String deletedStaffMember) {
-
 		try {
 			// AN PATH8HKE TO PROS8HKH STAFF
 			if (request.getParameter("addStaff") != null) {
@@ -185,9 +172,8 @@ public class CreateJobController extends Controller {
 				}
 			}
 			request.setAttribute("addedStaff", addedStaff);
-
-			ArrayList<String> allStaff = new ArrayList<>();
-			ArrayList<User> allStaffUsers = userService
+			List<String> allStaff = new ArrayList<>();
+			List<User> allStaffUsers = userService
 					.getAllStaffForProject(request.getParameter("project"));
 			for (User user : allStaffUsers) {
 				allStaff.add(user.getUsername());
@@ -200,9 +186,9 @@ public class CreateJobController extends Controller {
 		}
 	}
 
-	private ArrayList<User> getUsersFromUsernames(ArrayList<String> usernames)
+	private List<User> getUsersFromUsernames(List<String> usernames)
 			throws ServiceExDBFailure {
-		ArrayList<User> users = new ArrayList<>();
+		List<User> users = new ArrayList<>();
 		for (String username : usernames) {
 			users.add(userService.getUserWithUsername(username));
 		}

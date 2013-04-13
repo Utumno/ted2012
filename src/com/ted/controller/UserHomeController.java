@@ -1,8 +1,9 @@
 package com.ted.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,7 +30,6 @@ public class UserHomeController extends Controller {
 				"signedUser");
 		final String username = user.getUsername();
 		RolesENUM role = user.getRole();
-
 		switch (role) {
 		case STAFF:
 			request.setAttribute("staff", true);
@@ -40,21 +40,20 @@ public class UserHomeController extends Controller {
 		default:
 			break;
 		}
-
 		try {
 			// pairnw ola ta projects tou user
-			ArrayList<String> userProjects = projectService
+			List<String> userProjects = projectService
 					.getAllProjectNamesForUser(username);
 			request.setAttribute("userProjects", userProjects);
-			ArrayList<String> publicProjects = projectService
+			List<String> publicProjects = projectService
 					.getAllProjectNames(true);
 			publicProjects.removeAll(userProjects);
 			request.setAttribute("publicProjects", publicProjects);
-			HashMap<String, ArrayList<Job>> userJobs = new HashMap<>();
+			Map<String, List<Job>> userJobs = new HashMap<>();
 			// briskw mono oses jobs den einai done
 			for (String projectName : userProjects) {
-				ArrayList<Job> lolol = projectService
-						.getAllJobsForUserInProject(username, projectName);
+				List<Job> lolol = projectService.getAllJobsForUserInProject(
+						username, projectName);
 				for (int i = lolol.size() - 1; i >= 0; i--) {
 					Job job = lolol.get(i);
 					if (job.getState() == StatesENUM.DONE) {
@@ -79,5 +78,4 @@ public class UserHomeController extends Controller {
 			HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

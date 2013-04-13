@@ -1,6 +1,7 @@
 package com.ted.listeners;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpSessionListener;
  * but this does not work too well with Tomcat's hot redeployContext :
  * Initializes a ServletContext static variable and prints out when the context
  * is initialized and is about to be destroyed.
- * 
  */
 @WebListener
 public class SessionListener implements ServletContextListener,
@@ -33,7 +33,7 @@ public class SessionListener implements ServletContextListener,
 	public void sessionCreated(HttpSessionEvent se) {
 		HttpSession session = se.getSession();
 		session.setMaxInactiveInterval(MAX_INACTIVE_INTERVAL);
-		HashMap<String, String> messages = new HashMap<>();
+		Map<String, String> messages = new HashMap<>();
 		session.setAttribute("messages", messages);
 		System.out.println("Source : " + se.getSource());
 		increase();

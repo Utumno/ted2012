@@ -1,6 +1,7 @@
 <%@page import="com.ted.domain.User.RolesENUM"%>
 <%@page import="com.ted.domain.User"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="include/tag_libs.jsp"%>
 <%@ include file="include/top.jsp"%>
@@ -50,7 +51,7 @@
 			<%
 				String selectedManager = (String) request
 							.getAttribute("selectedManager");
-					ArrayList<String> allManagers = (ArrayList<String>) request
+					List<String> allManagers = (List<String>) request
 							.getAttribute("allManagers");
 			%>
 			<td>Υπεύθυνος Έργου</td>
@@ -90,9 +91,9 @@
 			<td valign="top">Προσωπικό</td>
 			<td>
 				<%
-					ArrayList<String> addedStaff = (ArrayList<String>) request
+					List<String> addedStaff = (List<String>) request
 								.getAttribute("addedStaff");
-						ArrayList<String> allStaff = (ArrayList<String>) request
+						List<String> allStaff = (List<String>) request
 								.getAttribute("allStaff");
 						if (addedStaff.size() > 0) {
 				%>
@@ -150,12 +151,12 @@
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td>&nbsp;</td>
 			<td><input type="submit" name="createProject" id="createProject"
 				value="Δημιουργία Έργου" /></td>
-			<td>&nbsp;</td>				
+			<td>&nbsp;</td>
 		</tr>
 	</table>
 </form>

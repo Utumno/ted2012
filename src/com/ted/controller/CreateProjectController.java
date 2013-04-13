@@ -2,6 +2,7 @@ package com.ted.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,68 +37,58 @@ public class CreateProjectController extends Controller {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		// diabazw tis parametrous ths formas
 		String name = null, description = null, publik = null, manager = null, staffMember = null;
 		String[] addedStaff1 = request.getParameterValues("added");
-		ArrayList<String> addedStaff = new ArrayList<>();
+		List<String> addedStaff = new ArrayList<>();
 		if (addedStaff1 != null) {
 			for (int i = 0; i < addedStaff1.length; ++i) {
 				addedStaff.add(addedStaff1[i]);
 			}
 		}
-
 		name = request.getParameter("name");
 		description = request.getParameter("description");
 		publik = request.getParameter("publik");
 		manager = request.getParameter("manager");
 		staffMember = request.getParameter("staffMember");
-
 		// AN PATH8HKE TO DHMIOYRGIA
 		if (request.getParameter("createProject") != null) {
 			boolean error = false;
-
 			// elegxoi twn pediwn
 			// check if name is empty
 			if (Validators.isNullOrEmpty(name)) {
 				request.setAttribute("emptyName", true);
 				error = true;
-			} else
-				try {
-					if (new ProjectService().isProjectNameDuplicate(name)) {
-						request.setAttribute("duplicateProjectName", true);
-						error = true;
-					}
-				} catch (ServiceExDBFailure e1) {
-					e1.printStackTrace();
-					request.setAttribute("ErrorString", e1.getMessage());
+			} else try {
+				if (new ProjectService().isProjectNameDuplicate(name)) {
+					request.setAttribute("duplicateProjectName", true);
 					error = true;
 				}
-
+			} catch (ServiceExDBFailure e1) {
+				e1.printStackTrace();
+				request.setAttribute("ErrorString", e1.getMessage());
+				error = true;
+			}
 			// check if description is empty
 			if (Validators.isNullOrEmpty(description)) {
 				request.setAttribute("emptyDescription", true);
 				error = true;
 			}
-
 			// check if publik is empty
 			if (Validators.isNullOrEmpty(publik)) {
 				request.setAttribute("emptyPublik", true);
 				error = true;
 			}
-
 			// check if manager is empty
 			if (Validators.isNullOrEmpty(manager)) {
 				request.setAttribute("emptyManager", true);
 				error = true;
 			}
-
 			// check if addedStaff is empty
 			if (addedStaff.isEmpty()) {
 				request.setAttribute("emptyStaff", true);
 				error = true;
 			}
-
 			// an ola ta pedia einai ok..apo8hkeush
 			if (!error) {
 				Project proj = new Project();
@@ -106,8 +97,7 @@ public class CreateProjectController extends Controller {
 				proj.setPublik("private".equals(publik) ? false : true);
 				try {
 					proj.setManager(userService.getUserWithUsername(manager));
-					ArrayList<User> staff;
-					staff = getUsersFromUsernames(addedStaff);
+					List<User> staff = getUsersFromUsernames(addedStaff);
 					proj.setStaff(staff);
 					projectService.createProject(proj);
 					response.sendRedirect("projectlist");
@@ -121,7 +111,6 @@ public class CreateProjectController extends Controller {
 				}
 			}
 		}
-
 		request.setAttribute("name", name);
 		request.setAttribute("description", description);
 		request.setAttribute("publik", publik);
@@ -133,7 +122,7 @@ public class CreateProjectController extends Controller {
 	}
 
 	private void helperProjectArrays(HttpServletRequest request,
-			String staffMember, ArrayList<String> addedStaff) {
+			String staffMember, List<String> addedStaff) {
 		try {
 			// AN PATH8HKE TO PROS8HKH STAFF
 			// 8etw allManagers kai allStaff attributes
@@ -143,17 +132,15 @@ public class CreateProjectController extends Controller {
 				}
 			}
 			request.setAttribute("addedStaff", addedStaff);
-
-			ArrayList<String> allStaff = new ArrayList<>();
-			ArrayList<User> allStaffUsers = userService.allStaff();
+			List<String> allStaff = new ArrayList<>();
+			List<User> allStaffUsers = userService.allStaff();
 			for (User user : allStaffUsers) {
 				allStaff.add(user.getUsername());
 			}
 			allStaff.removeAll(addedStaff);
 			request.setAttribute("allStaff", allStaff);
-
-			ArrayList<String> allManagers = new ArrayList<>();
-			ArrayList<User> allManagersUsers = userService.allManagers();
+			List<String> allManagers = new ArrayList<>();
+			List<User> allManagersUsers = userService.allManagers();
 			for (User user : allManagersUsers) {
 				allManagers.add(user.getUsername());
 			}
@@ -164,9 +151,9 @@ public class CreateProjectController extends Controller {
 		}
 	}
 
-	private ArrayList<User> getUsersFromUsernames(ArrayList<String> usernames)
+	private List<User> getUsersFromUsernames(List<String> usernames)
 			throws ServiceExDBFailure {
-		ArrayList<User> users = new ArrayList<>();
+		List<User> users = new ArrayList<>();
 		for (String username : usernames) {
 			users.add(userService.getUserWithUsername(username));
 		}

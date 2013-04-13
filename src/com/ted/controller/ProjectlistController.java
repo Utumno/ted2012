@@ -1,7 +1,7 @@
 package com.ted.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,9 +20,8 @@ public class ProjectListController extends Controller {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		try {
-			ArrayList<String> projectlist = projectService
+			List<String> projectlist = projectService
 					.getAllProjectNamesForUser(null);
 			request.setAttribute("projectlist", projectlist);
 		} catch (ServiceExDBFailure e) {

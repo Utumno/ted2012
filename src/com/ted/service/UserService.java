@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -42,18 +43,15 @@ public class UserService {
 	}
 
 	public boolean sendMailtoUser(User user, String subject, String message) {
-
 		try {
 			// Email message
 			String toAddress = user.getEmail();
 			String fromAddress = "ted.pm2012@yahoo.com";
-
 			// Auth.
 			String host = "smtp.mail.yahoo.com";
 			String port = "465";
 			String username = "ted.pm2012";
 			String password = "projmanted";
-
 			// Configure your JavaMail.
 			Properties props = new Properties();
 			props.setProperty("mail.transport.protocol", "smtps");
@@ -62,26 +60,21 @@ public class UserService {
 			props.setProperty("mail.user", username);
 			props.setProperty("mail.password", password);
 			props.setProperty("mail.smtp.auth", "true");
-
 			// Start an email session.
 			Session session = Session.getDefaultInstance(props, null);
 			Transport transport = session.getTransport("smtp");
 			MimeMessage mimeMessage = new MimeMessage(session);
 			Multipart multiPart = new MimeMultipart();
-
 			mimeMessage.setSubject(subject);
 			mimeMessage.addRecipient(RecipientType.TO, new InternetAddress(
 					toAddress));
 			MimeBodyPart textBodyPart = new MimeBodyPart();
 			textBodyPart.setContent(message, "text/plain; charset=ISO-8859-7");
-
 			multiPart.addBodyPart(textBodyPart);
 			mimeMessage.setContent(multiPart);
 			mimeMessage.setFrom(new InternetAddress(fromAddress));
-
 			// Send email.
 			transport.connect("smtp.mail.yahoo.co.in", username, password);
-
 			transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
 			transport.close();
 		} catch (MessagingException ex) {
@@ -133,9 +126,8 @@ public class UserService {
 		}
 	}
 
-	public ArrayList<User> allManagers() throws ServiceExDBFailure {
-
-		ArrayList<User> managers = new ArrayList<>();
+	public List<User> allManagers() throws ServiceExDBFailure {
+		List<User> managers = new ArrayList<>();
 		try {
 			managers = ud.findAll(RolesENUM.MANAGER);
 		} catch (DBExFailure e) {
@@ -144,9 +136,8 @@ public class UserService {
 		return managers;
 	}
 
-	public ArrayList<User> allStaff() throws ServiceExDBFailure {
-
-		ArrayList<User> staff = new ArrayList<>();
+	public List<User> allStaff() throws ServiceExDBFailure {
+		List<User> staff = new ArrayList<>();
 		try {
 			staff = ud.findAll(RolesENUM.STAFF);
 		} catch (DBExFailure e) {
@@ -155,9 +146,9 @@ public class UserService {
 		return staff;
 	}
 
-	public ArrayList<User> getAllStaffForProject(String project)
+	public List<User> getAllStaffForProject(String project)
 			throws ServiceExDBFailure {
-		ArrayList<User> staff = new ArrayList<>();
+		List<User> staff = new ArrayList<>();
 		try {
 			staff = ud.findAllForProject(project);
 		} catch (DBExFailure e) {
@@ -166,9 +157,8 @@ public class UserService {
 		return staff;
 	}
 
-	public ArrayList<User> getAllStaffForJob(Integer id)
-			throws ServiceExDBFailure {
-		ArrayList<User> staff = new ArrayList<>();
+	public List<User> getAllStaffForJob(Integer id) throws ServiceExDBFailure {
+		List<User> staff = new ArrayList<>();
 		try {
 			staff = ud.findAllForJob(id);
 		} catch (DBExFailure e) {
@@ -177,9 +167,8 @@ public class UserService {
 		return staff;
 	}
 
-	public ArrayList<User> allUsersExceptAdmin() throws ServiceExDBFailure {
-
-		ArrayList<User> allUsers = new ArrayList<>();
+	public List<User> allUsersExceptAdmin() throws ServiceExDBFailure {
+		List<User> allUsers = new ArrayList<>();
 		try {
 			allUsers = ud.findAllExceptRole(RolesENUM.ADMIN);
 		} catch (DBExFailure e) {
@@ -196,8 +185,7 @@ public class UserService {
 		} catch (DBExFailure e) {
 			throw new ServiceExDBFailure(e);
 		}
-		if (projectManagers.contains(username))
-			return true;
+		if (projectManagers.contains(username)) return true;
 		return false;
 	}
 
@@ -209,8 +197,7 @@ public class UserService {
 		} catch (DBExFailure e) {
 			throw new ServiceExDBFailure(e);
 		}
-		if (projectManagers.contains(username))
-			return true;
+		if (projectManagers.contains(username)) return true;
 		return false;
 	}
 
@@ -228,7 +215,6 @@ public class UserService {
 	}
 
 	/**
-	 * 
 	 * @param user
 	 * @return true an ton esbhse , false an den epitrepetai na sbhstei ,
 	 *         exception an egine sfalma sth bash
@@ -246,7 +232,6 @@ public class UserService {
 		} catch (DBExFailure e) {
 			throw new ServiceExDBFailure(e);
 		}
-
 	}
 
 	static class Helpers {
@@ -263,23 +248,19 @@ public class UserService {
 		static public String getHashedPassword(String password) {
 			String salt;
 			Random rand = new Random(System.nanoTime());
-
 			// dhmiourgw to salt(8 xarakthres apo a ews z)
 			salt = new String();
 			for (int i = 0; i < 8; i++) {
 				salt += (char) (rand.nextInt(26) + 97);
 			}
 			byte[] bSalt = salt.getBytes();
-
 			// pairnw to hash tou pass xrhsimopoiwntas to salt pou brhka prin
 			byte[] hashedpass = getHash(password, bSalt);
-
 			// Pairnoyme th hex anaparasth tou hashedpass
 			String hexString = new String();
 			for (int i = 0; i < hashedpass.length; i++) {
 				hexString += Integer.toHexString(0xFF & hashedpass[i]);
 			}
-
 			return salt + hexString.toString();
 		}
 
@@ -301,19 +282,16 @@ public class UserService {
 			// apo8hkeymeno h bash
 			String basesalt = passwordFromDataBase.substring(0, 8);
 			String basehasshedpass = passwordFromDataBase.substring(8);
-
 			// Briskeis to hash toy pass pou edwse o user,xrhsimopoiwntas to
 			// salt
 			// pou phres apo bash
 			byte[] bSalt = basesalt.getBytes();
 			byte[] hashedpass = getHash(passwordFromUser, bSalt);
-
 			// Pairneis th hex anaparastash toy hased password toy xrhsth
 			String hexString = new String();
 			for (int i = 0; i < hashedpass.length; i++) {
 				hexString += (Integer.toHexString(0xFF & hashedpass[i]));
 			}
-
 			System.out.println(hexString);
 			// Elegxeis gia isothta me ayto poy einai apo8hkeymeno sth bash
 			if (basehasshedpass.equals(hexString)) {
@@ -345,5 +323,4 @@ public class UserService {
 			}
 		}
 	}
-
 }

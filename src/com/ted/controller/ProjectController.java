@@ -2,6 +2,7 @@ package com.ted.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -46,13 +47,12 @@ public class ProjectController extends Controller {
 				return;
 			}
 			RolesENUM role = signedUser.getRole();
-
 			switch (role) {
 			case ADMIN:
 				request.setAttribute("admin", true);
 				helperBasicProjectInitialization(request, proj);
 				helperAllStaffInitialization(request,
-						(ArrayList<String>) request.getAttribute("addedStaff"));
+						(List<String>) request.getAttribute("addedStaff"));
 				// only the admin can change the manager
 				helperAllManagerNames(request);
 				sc.getRequestDispatcher(PROJECT_JSP).forward(request, response);
@@ -65,8 +65,7 @@ public class ProjectController extends Controller {
 					request.setAttribute("projectManager", true);
 					helperBasicProjectInitialization(request, proj);
 					helperAllStaffInitialization(request,
-							(ArrayList<String>) request
-									.getAttribute("addedStaff"));
+							(List<String>) request.getAttribute("addedStaff"));
 					sc.getRequestDispatcher(PROJECT_JSP).forward(request,
 							response);
 					return;
@@ -80,8 +79,8 @@ public class ProjectController extends Controller {
 				} else if (role == RolesENUM.STAFF) {
 					request.setAttribute("staff", true);
 				}
-				ArrayList<String> addedStaff = new ArrayList<String>();
-				ArrayList<User> addedStaffUsers = proj.getStaff();
+				List<String> addedStaff = new ArrayList<String>();
+				List<User> addedStaffUsers = proj.getStaff();
 				for (User a : addedStaffUsers) {
 					addedStaff.add(a.getUsername());
 				}
@@ -112,8 +111,8 @@ public class ProjectController extends Controller {
 	 */
 	private void helperAllManagerNames(HttpServletRequest request)
 			throws ServiceExDBFailure {
-		ArrayList<String> allManagers = new ArrayList<>();
-		ArrayList<User> allManagersUsers = null;
+		List<String> allManagers = new ArrayList<>();
+		List<User> allManagersUsers = null;
 		allManagersUsers = userService.allManagers();
 		for (User user : allManagersUsers) {
 			allManagers.add(user.getUsername());
@@ -131,7 +130,6 @@ public class ProjectController extends Controller {
 	 */
 	private void helperBasicProjectInitialization(HttpServletRequest request,
 			Project proj) throws ServiceExDBFailure {
-
 		request.setAttribute("name", proj.getName());
 		request.setAttribute("description", proj.getDescription());
 		if (proj.isPublik()) {
@@ -140,15 +138,13 @@ public class ProjectController extends Controller {
 			request.setAttribute("publik", "private");
 		}
 		request.setAttribute("selectedManager", proj.getManager().getUsername());
-
-		ArrayList<String> addedStaff = new ArrayList<String>();
-		ArrayList<User> addedStaffUsers = proj.getStaff();
+		List<String> addedStaff = new ArrayList<String>();
+		List<User> addedStaffUsers = proj.getStaff();
 		for (User a : addedStaffUsers) {
 			addedStaff.add(a.getUsername());
 		}
 		request.setAttribute("addedStaff", addedStaff);
-
-		ArrayList<Job> jobs = null;
+		List<Job> jobs = null;
 		jobs = projectService.getJobsForProject(proj.getName());
 		request.setAttribute("jobs", jobs);
 	}
@@ -161,9 +157,9 @@ public class ProjectController extends Controller {
 	 * @throws ServiceExDBFailure
 	 */
 	private void helperAllStaffInitialization(HttpServletRequest request,
-			ArrayList<String> addedStaff) throws ServiceExDBFailure {
-		ArrayList<String> allStaff = new ArrayList<>();
-		ArrayList<User> allStaffUsers = userService.allStaff();
+			List<String> addedStaff) throws ServiceExDBFailure {
+		List<String> allStaff = new ArrayList<>();
+		List<User> allStaffUsers = userService.allStaff();
 		for (User user : allStaffUsers) {
 			allStaff.add(user.getUsername());
 		}
@@ -174,16 +170,14 @@ public class ProjectController extends Controller {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		String description = null, publik = null, manager = null, staffMember = null, deletedStaffMember = null;
 		String[] addedStaff1 = request.getParameterValues("added");
-		ArrayList<String> addedStaff = new ArrayList<>(); // never null ****
+		List<String> addedStaff = new ArrayList<>(); // never null ****
 		if (addedStaff1 != null) {
 			for (int i = 0; i < addedStaff1.length; ++i) {
 				addedStaff.add(addedStaff1[i]);
 			}
 		}
-
 		final String name = Helpers.decodeRequest(request.getParameter("name"));
 		description = request.getParameter("description");
 		publik = request.getParameter("publik");
@@ -200,7 +194,6 @@ public class ProjectController extends Controller {
 			User signedUser = (User) (request.getSession(false)
 					.getAttribute("signedUser"));
 			RolesENUM role = signedUser.getRole();
-
 			switch (role) {
 			case ADMIN:
 				request.setAttribute("admin", true);
@@ -258,7 +251,7 @@ public class ProjectController extends Controller {
 					try {
 						proj.setManager(userService
 								.getUserWithUsername(manager));
-						ArrayList<User> staff = getUsersFromUsernames(addedStaff);
+						List<User> staff = getUsersFromUsernames(addedStaff);
 						proj.setStaff(staff);
 						projectService.updateProject(proj);
 						response.sendRedirect(Helpers.encodeUri(
@@ -271,12 +264,11 @@ public class ProjectController extends Controller {
 					}
 				}
 			}
-
 			request.setAttribute("name", name);
 			request.setAttribute("description", description);
 			request.setAttribute("publik", publik);
 			request.setAttribute("selectedManager", manager);
-			ArrayList<Job> jobs = null;
+			List<Job> jobs = null;
 			jobs = projectService.getJobsForProject(name);
 			request.setAttribute("jobs", jobs);
 			helperProjectArrays(request, staffMember, deletedStaffMember,
@@ -292,8 +284,7 @@ public class ProjectController extends Controller {
 
 	private void helperProjectArrays(HttpServletRequest request,
 			String staffMember, String deletedStaffMember,
-			ArrayList<String> addedStaff) throws ServiceExDBFailure {
-
+			List<String> addedStaff) throws ServiceExDBFailure {
 		// AN PATH8HKE TO PROS8HKH STAFF
 		if (request.getParameter("addStaff") != null) {
 			if (staffMember != null) {
@@ -307,30 +298,27 @@ public class ProjectController extends Controller {
 			}
 		}
 		request.setAttribute("addedStaff", addedStaff);
-
-		ArrayList<String> allStaff = new ArrayList<>();
-		ArrayList<User> allStaffUsers = userService.allStaff();
+		List<String> allStaff = new ArrayList<>();
+		List<User> allStaffUsers = userService.allStaff();
 		for (User user : allStaffUsers) {
 			allStaff.add(user.getUsername());
 		}
 		allStaff.removeAll(addedStaff);
 		request.setAttribute("allStaff", allStaff);
-
-		ArrayList<String> allManagers = new ArrayList<>();
-		ArrayList<User> allManagersUsers = userService.allManagers();
+		List<String> allManagers = new ArrayList<>();
+		List<User> allManagersUsers = userService.allManagers();
 		for (User user : allManagersUsers) {
 			allManagers.add(user.getUsername());
 		}
 		request.setAttribute("allManagers", allManagers);
 	}
 
-	private ArrayList<User> getUsersFromUsernames(ArrayList<String> usernames)
+	private List<User> getUsersFromUsernames(List<String> usernames)
 			throws ServiceExDBFailure {
-		ArrayList<User> users = new ArrayList<>();
+		List<User> users = new ArrayList<>();
 		for (String username : usernames) {
 			users.add(userService.getUserWithUsername(username));
 		}
 		return users;
 	}
-
 }
