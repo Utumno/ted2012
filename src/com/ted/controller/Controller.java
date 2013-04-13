@@ -31,7 +31,7 @@ public class Controller extends HttpServlet implements Addresses {
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		sc = getServletContext();
+		if (sc == null) sc = getServletContext();
 		log = LoggerFactory.getLogger(this.getClass());
 	}
 

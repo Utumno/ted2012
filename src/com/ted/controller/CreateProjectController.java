@@ -2,6 +2,7 @@ package com.ted.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -42,9 +43,8 @@ public class CreateProjectController extends Controller {
 		String[] addedStaff1 = request.getParameterValues("added");
 		List<String> addedStaff = new ArrayList<>();
 		if (addedStaff1 != null) {
-			for (int i = 0; i < addedStaff1.length; ++i) {
-				addedStaff.add(addedStaff1[i]);
-			}
+			// if addedStaff1 were null a null pointer exception would be thrown
+			addedStaff = Arrays.asList(addedStaff1);
 		}
 		name = request.getParameter("name");
 		description = request.getParameter("description");
