@@ -33,7 +33,7 @@ public class DeleteJobController extends Controller {
 		String redirectURIAfterDeleting = null;
 		Integer idOfJobToDelete = null;
 		try {
-			// pairnw oles tis jobs pou exoun epilegei kai tis diagrafw 1-1
+			// retrieve selected jobs and delete them one by one
 			String[] jobsIdsToDelete = request
 					.getParameterValues("arrayOfKeysOfObjectsToBeDeleted");
 			if (jobsIdsToDelete != null) {
@@ -63,7 +63,7 @@ public class DeleteJobController extends Controller {
 				return;
 			}
 			jobsIdsToDelete = request.getParameterValues("deleteJobId");
-			// An den exei epilegei kamia job
+			// if there is no job selected
 			if (jobsIdsToDelete == null) {
 				response.sendRedirect(Helpers.encodeUri(PROJECT_SERVLET
 						+ "?name=", request.getParameter("project")));

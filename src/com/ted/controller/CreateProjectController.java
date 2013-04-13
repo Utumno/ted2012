@@ -37,7 +37,7 @@ public class CreateProjectController extends Controller {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// diabazw tis parametrous ths formas
+		// get form parameters
 		String name = null, description = null, publik = null, manager = null, staffMember = null;
 		String[] addedStaff1 = request.getParameterValues("added");
 		List<String> addedStaff = new ArrayList<>();

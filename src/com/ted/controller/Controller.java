@@ -35,8 +35,19 @@ public class Controller extends HttpServlet implements Addresses {
 		log = LoggerFactory.getLogger(this.getClass());
 	}
 
-	// pros8hkh eggrafhs me tuxaio kleidi kai mhnyma to message , hashmap me ta
-	// mhnymata
+	/**
+	 * Adds a message to the SUCCESS_MESSAGES_MAP with a random key which is
+	 * passed as a GET parameter as &r=<random_key>. This message is displayed
+	 * on successful completion of some action. The servlet using it must
+	 * construct the request.
+	 * 
+	 * @param request
+	 *            the request used to retrieve the session the message is to be
+	 *            added to
+	 * @param message
+	 *            the message to display to the user
+	 * @return
+	 */
 	protected String messageKey(HttpServletRequest request, String message) {
 		HttpSession session = request.getSession(false);
 		if (session == null) return null; // should not happen

@@ -25,6 +25,7 @@ import com.ted.validators.Validators;
 public class CreateJobController extends Controller {
 
 	private static final long serialVersionUID = 350118892218083137L;
+	private static final String succesfulJobCreation = "Η εργασία δημιουργήθηκε επιτυχώς !";
 	private UserService userService = new UserService();
 	private ProjectService projectService = new ProjectService();
 
@@ -39,7 +40,7 @@ public class CreateJobController extends Controller {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// Briskw project kai 8etw attributes gia to jsp
+		// retrieve project and specify attributes for the jsp
 		Project enclosingProject = null;
 		try {
 			enclosingProject = projectService.getProjectInfoByName(request
@@ -65,10 +66,10 @@ public class CreateJobController extends Controller {
 		String startDateStr = request.getParameter("startDate");
 		String endDateStr = request.getParameter("endDate");
 		String deletedStaffMember = request.getParameter("deletedStaffMember");
-		// AN PATH8HKE TO DHMIOYRGIA
+		// if create was pressed
 		if (request.getParameter("createJob") != null) {
 			boolean error = false;
-			// elegxos twn pediwn
+			// validation
 			if (Validators.isNullOrEmpty(name)) {
 				request.setAttribute("emptyName", true);
 				error = true;
@@ -126,7 +127,7 @@ public class CreateJobController extends Controller {
 				request.setAttribute("emptyStaff", true);
 				error = true;
 			}
-			// an ola kala...apo8hkeush tou job
+			// if there is no error persist the job
 			if (!error) {
 				Job job = enclosingProject.new Job();
 				job.setName(name);
@@ -137,8 +138,10 @@ public class CreateJobController extends Controller {
 					List<User> staff = getUsersFromUsernames(addedStaff);
 					job.setJobStaff(staff);
 					projectService.addJob(enclosingProject, job);
+					String rand = messageKey(request, succesfulJobCreation);
 					response.sendRedirect(Helpers.encodeUri(PROJECT_SERVLET
-							+ "?name=", enclosingProject.getName()));
+							+ "?r=" + rand + "&name=",
+							enclosingProject.getName()));
 					return;
 				} catch (ServiceExDBFailure | ServiceExJobExists e) {
 					log.debug("CreateJobController::doPost", e);
