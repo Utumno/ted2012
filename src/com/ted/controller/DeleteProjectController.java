@@ -14,13 +14,15 @@ import com.ted.service.ServiceExDBFailure;
 
 @WebServlet("/deleteproject")
 public class DeleteProjectController extends Controller {
+
 	private static final long serialVersionUID = 4956286744189905193L;
+	private static final String SUCCESS = "Το project διεγράφη !";
+	private String redirectAdress = PROJECTLIST_SERVLET;
 	private ProjectService projectService = new ProjectService();
 
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		String[] projectsToDelete = request.getParameterValues("deleteProject");
 		if (projectsToDelete != null) {
 			try {
@@ -29,13 +31,14 @@ public class DeleteProjectController extends Controller {
 					Project projToDelete = projectService
 							.getProjectInfoByName(proj);
 					projectService.deleteProject(projToDelete);
+					redirectAdress += "?r=" + messageKey(request, SUCCESS);
 				}
 			} catch (ServiceExDBFailure e) {
 				log.debug("DeleteProjectController::doPost", e);
 				request.setAttribute("ErrorString", e.getMessage());
 			}
 		}
-		response.sendRedirect(PROJECTLIST_SERVLET);
+		response.sendRedirect(redirectAdress);
 	}
 
 	@Override
@@ -47,10 +50,11 @@ public class DeleteProjectController extends Controller {
 		try {
 			projToDelete = projectService.getProjectInfoByName(projName);
 			projectService.deleteProject(projToDelete);
+			redirectAdress += "?r=" + messageKey(request, SUCCESS);
 		} catch (ServiceExDBFailure e) {
 			log.debug("DeleteProjectController::doGet", e);
 			request.setAttribute("ErrorString", e.getMessage());
 		}
-		response.sendRedirect(PROJECTLIST_SERVLET);
+		response.sendRedirect(redirectAdress);
 	}
 }
