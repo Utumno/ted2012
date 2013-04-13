@@ -31,20 +31,15 @@ public class RegisterController extends Controller {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		String username = null, password1 = null, password2 = null, name = null, surname = null, email = null;
-
 		username = request.getParameter("username");
 		password1 = request.getParameter("password1");
 		password2 = request.getParameter("password2");
 		name = request.getParameter("name");
 		surname = request.getParameter("surname");
 		email = request.getParameter("email");
-
 		// term = request.getParameter("agree"); // terms of service
-
 		boolean error = false;
-
 		// check if password1 is too small
 		if (Validators.isNullOrEmpty(password1)) {
 			request.setAttribute("emptyPassword1", true);
@@ -56,7 +51,6 @@ public class RegisterController extends Controller {
 			request.setAttribute("diffPasswords", true);
 			error = true;
 		}
-
 		// check if password2 is too small
 		if (Validators.isNullOrEmpty(password2)) {
 			request.setAttribute("emptyPassword2", true);
@@ -65,19 +59,16 @@ public class RegisterController extends Controller {
 			request.setAttribute("smallPassword2", true);
 			error = true;
 		}
-
 		// check if name is empty
 		if (Validators.isNullOrEmpty(name)) {
 			request.setAttribute("emptyName", true);
 			error = true;
 		}
-
 		// check if surname is empty
 		if (Validators.isNullOrEmpty(surname)) {
 			request.setAttribute("emptySurname", true);
 			error = true;
 		}
-
 		// check if email is empty
 		if (Validators.isNullOrEmpty(email)) {
 			request.setAttribute("emptyEmail", true);
@@ -86,7 +77,6 @@ public class RegisterController extends Controller {
 			request.setAttribute("invalidEmail", true);
 			error = true; // a way to get rid of this ?
 		}
-
 		// check if username is empty
 		if (Validators.isNullOrEmpty(username)) {
 			request.setAttribute("emptyUsername", true);
@@ -108,8 +98,7 @@ public class RegisterController extends Controller {
 				error = true;
 			}
 		}
-
-		// an ola ok-apo8hkeush user
+		// no errors - persist the user
 		if (!error) {
 			User signedUser = new User();
 			signedUser.setUsername(username);
@@ -145,6 +134,5 @@ public class RegisterController extends Controller {
 		RequestDispatcher rd = sc.getRequestDispatcher(REGISTER_JSP);
 		rd.forward(request, response);
 		return;
-
 	}
 }

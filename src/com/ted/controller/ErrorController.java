@@ -24,5 +24,4 @@ public class ErrorController extends Controller {
 			HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

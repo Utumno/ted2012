@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 class DBConnectionPool {
 
 	// TODO error handling in clients
-
 	private DataSource ds = null;
 	private static final Logger log = LoggerFactory
 			.getLogger("DBConnectionPool");
@@ -68,7 +67,6 @@ class DBConnectionPool {
 	// log.error("DBConnectionPool::freeDS", e);
 	// }
 	// }
-
 	/**
 	 * This is intended to be used in finally blocks and therefore MUST NOT
 	 * THROW. See : http://today.java.net/article/2006/04/04/exception-handling-

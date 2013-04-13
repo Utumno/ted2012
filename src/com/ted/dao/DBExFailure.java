@@ -9,8 +9,7 @@ public class DBExFailure extends DBException {
 		super(cause);
 	}
 
-	public DBExFailure() {
-	}
+	public DBExFailure() {}
 
 	@Override
 	public String getMessage() {

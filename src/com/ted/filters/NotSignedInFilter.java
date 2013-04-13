@@ -21,14 +21,12 @@ import com.ted.domain.User.RolesENUM;
 /**
  * This filter checks for a SIGNED IN user and redirects to the home page in
  * case the user is signed it - away from the register/login pages
- * 
  */
 @WebFilter(urlPatterns = { "/home", "/register", "/login" })
 public class NotSignedInFilter implements Filter, Addresses {
 
 	@Override
-	public void destroy() {
-	}
+	public void destroy() {}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
@@ -71,7 +69,5 @@ public class NotSignedInFilter implements Filter, Addresses {
 	}
 
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
-	}
-
+	public void init(FilterConfig arg0) throws ServletException {}
 }

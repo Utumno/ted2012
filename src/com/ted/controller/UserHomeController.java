@@ -41,7 +41,7 @@ public class UserHomeController extends Controller {
 			break;
 		}
 		try {
-			// pairnw ola ta projects tou user
+			// get all projects the user participates in
 			List<String> userProjects = projectService
 					.getAllProjectNamesForUser(username);
 			request.setAttribute("userProjects", userProjects);
@@ -50,7 +50,7 @@ public class UserHomeController extends Controller {
 			publicProjects.removeAll(userProjects);
 			request.setAttribute("publicProjects", publicProjects);
 			Map<String, List<Job>> userJobs = new HashMap<>();
-			// briskw mono oses jobs den einai done
+			// find all unfinished jobs
 			for (String projectName : userProjects) {
 				List<Job> lolol = projectService.getAllJobsForUserInProject(
 						username, projectName);

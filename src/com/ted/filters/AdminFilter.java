@@ -19,23 +19,19 @@ import com.ted.domain.User.RolesENUM;
 
 /**
  * This filter checks if the user is admin and redirects to home if user is not
- * 
  */
 @WebFilter(urlPatterns = { "/adminhome", "/createproject", "/deleteproject",
 		"/deleteuser", "/projectlist", "/userlist" })
 public class AdminFilter implements Filter, Addresses {
 
 	@Override
-	public void destroy() {
-	}
+	public void destroy() {}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		HttpServletResponse httpRes = (HttpServletResponse) response;
-
 		HttpSession session = httpReq.getSession(false);
 		if (((User) session.getAttribute("signedUser")).getRole() == RolesENUM.ADMIN) {
 			chain.doFilter(request, response);
@@ -45,7 +41,5 @@ public class AdminFilter implements Filter, Addresses {
 	}
 
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
-	}
-
+	public void init(FilterConfig arg0) throws ServletException {}
 }

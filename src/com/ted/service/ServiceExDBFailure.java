@@ -9,8 +9,7 @@ public class ServiceExDBFailure extends ServiceException {
 		super(cause);
 	}
 
-	public ServiceExDBFailure() {
-	}
+	public ServiceExDBFailure() {}
 
 	@Override
 	public String getMessage() {

@@ -18,7 +18,6 @@ import com.ted.validators.Validators;
 public class LoginController extends Controller {
 
 	private static final long serialVersionUID = -8420055833341622782L;
-
 	private UserService userService = new UserService();
 
 	@Override
@@ -30,7 +29,6 @@ public class LoginController extends Controller {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		boolean error = false;

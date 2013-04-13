@@ -40,7 +40,7 @@ public class JobController extends Controller {
 			return;
 		}
 		int jobId = Integer.parseInt(request.getParameter("id"));
-		// pairnw to job kai 8etw ta aparaithtta attributes sto request
+		// get job and add relevant attributes to the request
 		try {
 			Project proj = projectService.getProjectInfoByName(projectService
 					.getProjectNameOfJob(jobId));
@@ -129,8 +129,8 @@ public class JobController extends Controller {
 							signedUser.getUsername());
 				}
 				// sql sleeps ! we redirect to see the comment immediately
-				// aparaithto!! giati den uparxoun ta pedia ths formas!! prepei
-				// na pame sto get opwsdhpote!!
+				// necessary!! form fields do not exist !! we *must* Redirect to
+				// doGet
 				response.sendRedirect(JOB_SERVLET + "?id=" + jobId);
 				return;
 			}
@@ -148,8 +148,8 @@ public class JobController extends Controller {
 				state = StatesENUM.DONE.ordinal();
 				break;
 			}
-			// An path8hke to Update State of Job apo kapoion staff
-			// member-enhmerwnw th bash
+			// if Update State of Job was pressed by a member of staff
+			// update the DB
 			if (request.getParameter("updateJobState") != null) {
 				projectService.updateStateofJob(jobId, state);
 			}
@@ -219,9 +219,9 @@ public class JobController extends Controller {
 					addedStaff.add(addedStaff1[i]);
 				}
 			}
-			// AN PATH8HKE "ENHMERWSH"
+			// if Update State of Job was pressed
 			if (request.getParameter("updateJob") != null) {
-				// Validation twn pediwn
+				// Validation
 				boolean error = false;
 				if (Validators.isNullOrEmpty(description)) {
 					request.setAttribute("emptyDescription", true);
@@ -269,7 +269,7 @@ public class JobController extends Controller {
 						error = true;
 					}
 				}
-				// Enhmerwsh ths bashs me thn updated job
+				// persist the updated job
 				if (!error) {
 					job.setDescription(description);
 					job.setStartDate(startDateTime);
@@ -373,13 +373,13 @@ public class JobController extends Controller {
 			String staffMember, String deletedStaffMember,
 			List<String> addedStaff, String projectName)
 			throws ServiceExDBFailure {
-		// AN PATH8HKE TO PROS8HKH STAFF
+		// add staff was pressed
 		if (request.getParameter("addStaff") != null) {
 			if (staffMember != null) {
 				addedStaff.add(staffMember);
 			}
 		}
-		// AN PATH8HKE TO DIAGRAFH STAFF
+		// delete staff pressed
 		if (request.getParameter("deleteStaff") != null) {
 			if (deletedStaffMember != null) {
 				addedStaff.remove(deletedStaffMember);

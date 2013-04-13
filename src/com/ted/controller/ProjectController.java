@@ -222,9 +222,9 @@ public class ProjectController extends Controller {
 				}
 				break;
 			}
-			// AN PATH8HKE "ENHMERWSH"
+			// update pressed
 			if (request.getParameter("updateProject") != null) {
-				// validation twn pediwn
+				// validation
 				boolean error = false;
 				if (Validators.isNullOrEmpty(description)) {
 					request.setAttribute("emptyDescription", true);
@@ -285,13 +285,13 @@ public class ProjectController extends Controller {
 	private void helperProjectArrays(HttpServletRequest request,
 			String staffMember, String deletedStaffMember,
 			List<String> addedStaff) throws ServiceExDBFailure {
-		// AN PATH8HKE TO PROS8HKH STAFF
+		// add staff pressed
 		if (request.getParameter("addStaff") != null) {
 			if (staffMember != null) {
 				addedStaff.add(staffMember);
 			}
 		}
-		// AN PATH8HKE TO DIAGRAFH STAFF
+		// delete staff pressed
 		if (request.getParameter("deleteStaff") != null) {
 			if (deletedStaffMember != null) {
 				addedStaff.remove(deletedStaffMember);

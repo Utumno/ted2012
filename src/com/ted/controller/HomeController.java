@@ -29,5 +29,4 @@ public class HomeController extends Controller {
 			HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

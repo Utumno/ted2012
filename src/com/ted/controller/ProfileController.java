@@ -24,7 +24,6 @@ public class ProfileController extends Controller {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		final String username = request.getParameter("user");
 		System.out.println(username);
 		if (username != null) {
@@ -42,10 +41,10 @@ public class ProfileController extends Controller {
 			User user = null;
 			try {
 				user = userService.getUserWithUsername(username);
-				// An path8hke to update(gia to rolo enos xrhsth)
+				// if Update user role was pressed
 				if (request.getParameter("updateProfile") != null) {
-					// allakse o admin to rolo tou xrhsth
-					// ara to apo8hkeuoume sth bash kai ksanapairnoume ton user
+					// admin changed user role
+					// persist and get the user anew
 					RolesENUM role = null;
 					String roleParam = request.getParameter("role");
 					if (roleParam != null) {
@@ -70,17 +69,15 @@ public class ProfileController extends Controller {
 					.forward(request, response);
 			return;
 		} else {
-			// update to profile mou
+			// update my profile
 			if (request.getParameter("updateMyProfile") != null) {
 				User me = (User) request.getSession()
 						.getAttribute("signedUser");
-
 				String name = null, surname = null, email = null;
 				name = request.getParameter("name");
 				surname = request.getParameter("surname");
 				email = request.getParameter("email");
 				System.out.println("phra " + name + surname + email);
-
 				// validation
 				boolean error = false;
 				if (Validators.isNullOrEmpty(name)) {
@@ -122,7 +119,6 @@ public class ProfileController extends Controller {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		final String username = Helpers.decodeRequest(request
 				.getParameter("user"));
 		if (username != null) {

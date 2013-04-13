@@ -161,3 +161,7 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 INSERT INTO `ted2012`.`users` (`username`, `password`, `name`, `surname`, `email`, `role`) VALUES ('ted2012', 'aovzxrqi24cbb150be287718a5a8c91e2fabef4f4bf25fab8cbf336be329fcdf15f6c8c2', 'adminName', 'adminSurname', 'admin@yahoo.com', 0);
+
+INSERT INTO `ted2012`.`users` (`username`, `password`, `name`, `surname`, `email`, `role`) VALUES ('projectManager', 'aovzxrqi24cbb150be287718a5a8c91e2fabef4f4bf25fab8cbf336be329fcdf15f6c8c2', 'nameManager', 'surnameManager', 'manager@yahoo.com', 2);
+
+INSERT INTO `ted2012`.`users` (`username`, `password`, `name`, `surname`, `email`, `role`) VALUES ('staff', 'aovzxrqi24cbb150be287718a5a8c91e2fabef4f4bf25fab8cbf336be329fcdf15f6c8c2', 'nameStaff', 'surnameStaff', 'staff@yahoo.com', 3);

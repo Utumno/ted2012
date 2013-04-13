@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 /**
  * @author std09200
- *
  */
 public final class Validators {
 
@@ -174,5 +173,4 @@ public final class Validators {
 		}
 		return true;
 	}
-
 }

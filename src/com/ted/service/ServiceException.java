@@ -6,8 +6,7 @@ public abstract class ServiceException extends Exception {
 		super(cause);
 	}
 
-	public ServiceException() {
-	}
+	public ServiceException() {}
 
 	private static final long serialVersionUID = 4213666133648941491L;
 }

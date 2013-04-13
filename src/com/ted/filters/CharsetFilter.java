@@ -11,7 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
-//import org.elkethe.util.RequestPrinter;
+// import org.elkethe.util.RequestPrinter;
 /**
  * Charset filter. Standard way of ensuring consistent encoding of request/
  * response streams. MUST BE THE VERY FIRST FILTER IN THE CHAIN. Also disables
@@ -23,8 +23,7 @@ public class CharsetFilter implements Filter {
 	private String encoding;
 
 	@Override
-	public void destroy() {
-	}
+	public void destroy() {}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
@@ -48,7 +47,6 @@ public class CharsetFilter implements Filter {
 				"no-cache, no-store, must-revalidate"); // HTTP 1.1.
 		httpResp.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 		httpResp.setDateHeader("Expires", 0); // Proxies.
-
 		// System.out.println("Headers : "
 		// + RequestPrinter
 		// .debugStringHeaders((HttpServletRequest) request));
@@ -57,7 +55,6 @@ public class CharsetFilter implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		encoding = filterConfig.getInitParameter("requestEncoding");
-		if (encoding == null)
-			encoding = "UTF-8";
+		if (encoding == null) encoding = "UTF-8";
 	}
 }
