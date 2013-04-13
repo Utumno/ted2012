@@ -23,6 +23,7 @@ import com.ted.validators.Validators;
 public class CreateProjectController extends Controller {
 
 	private static final long serialVersionUID = -3120249482338819138L;
+	private static final String SUCCESS = "Το project δημιουργήθηκε επιτυχώς";
 	private UserService userService = new UserService();
 	private ProjectService projectService = new ProjectService();
 
@@ -51,10 +52,10 @@ public class CreateProjectController extends Controller {
 		publik = request.getParameter("publik");
 		manager = request.getParameter("manager");
 		staffMember = request.getParameter("staffMember");
-		// AN PATH8HKE TO DHMIOYRGIA
+		// if "Create project" was pressed
 		if (request.getParameter("createProject") != null) {
 			boolean error = false;
-			// elegxoi twn pediwn
+			// validation
 			// check if name is empty
 			if (Validators.isNullOrEmpty(name)) {
 				request.setAttribute("emptyName", true);
@@ -89,7 +90,7 @@ public class CreateProjectController extends Controller {
 				request.setAttribute("emptyStaff", true);
 				error = true;
 			}
-			// an ola ta pedia einai ok..apo8hkeush
+			// if there is no error persist the project
 			if (!error) {
 				Project proj = new Project();
 				proj.setName(name);
@@ -100,7 +101,8 @@ public class CreateProjectController extends Controller {
 					List<User> staff = getUsersFromUsernames(addedStaff);
 					proj.setStaff(staff);
 					projectService.createProject(proj);
-					response.sendRedirect("projectlist");
+					String rand = messageKey(request, SUCCESS);
+					response.sendRedirect(PROJECTLIST_SERVLET + "?r=" + rand);
 					return;
 				} catch (ServiceExDBFailure e) {
 					log.debug("CreateProjectController::doPost", e);
