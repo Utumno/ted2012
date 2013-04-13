@@ -11,6 +11,10 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import org.slf4j.LoggerFactory;
+
+import com.mysql.jdbc.AbandonedConnectionCleanupThread;
+
 /**
  * Session and context listener. Session : Sets the MAX_INACTIVE_INTERVAL for
  * the session (in seconds) after which the session times out. The session
@@ -67,6 +71,13 @@ public class SessionListener implements ServletContextListener,
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		// TODO freeDS()
+		try {
+			AbandonedConnectionCleanupThread.shutdown();
+		} catch (InterruptedException e) {
+			System.out.println("SessionListener.contextDestroyed()");
+			LoggerFactory.getLogger(this.getClass()).debug(
+					"Failed to cleanup JDBC.", e);
+		}
 		System.out.println("SessionListener - contextDestroyed");
 	}
 
