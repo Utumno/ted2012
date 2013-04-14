@@ -13,7 +13,7 @@ I suppose you have a working eclipse JavaEE set up - including a tomcat server
 4. Edit context xml with your account/pass for MySQL server as well as the url
 for the DB. Default :
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/ted2012">
 	<Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
