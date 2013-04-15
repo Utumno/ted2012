@@ -2,7 +2,6 @@ package com.ted.filters;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -13,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ted.controller.Addresses;
-
 /**
  * This filter checks if the user is NOT signed in and redirects to the
  * index.jsp in case the user is not
@@ -22,7 +19,7 @@ import com.ted.controller.Addresses;
 @WebFilter(urlPatterns = { "/createjob", "/createproject", "/deletejob",
 		"/deleteproject", "/deleteuser", "/logout", "/job", "/profile",
 		"/project", "/projectlist", "/userhome", "/userlist" })
-public class SignedInFilter implements Filter, Addresses {
+public class SignedInFilter extends BaseFilter {
 
 	@Override
 	public void destroy() {}
@@ -34,6 +31,7 @@ public class SignedInFilter implements Filter, Addresses {
 		HttpServletResponse httpRes = (HttpServletResponse) response;
 		HttpSession session = httpReq.getSession(false);
 		if (session != null) {
+			log.debug("session not null");
 			if (session.getAttribute("signedUser") != null) {
 				chain.doFilter(request, response);
 				return;

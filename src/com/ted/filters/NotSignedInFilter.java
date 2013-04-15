@@ -2,7 +2,6 @@ package com.ted.filters;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.RequestDispatcher;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ted.controller.Addresses;
 import com.ted.domain.User;
 import com.ted.domain.User.RolesENUM;
 
@@ -23,7 +21,7 @@ import com.ted.domain.User.RolesENUM;
  * case the user is signed it - away from the register/login pages
  */
 @WebFilter(urlPatterns = { "/home", "/register", "/login" })
-public class NotSignedInFilter implements Filter, Addresses {
+public class NotSignedInFilter extends BaseFilter {
 
 	@Override
 	public void destroy() {}
@@ -35,8 +33,7 @@ public class NotSignedInFilter implements Filter, Addresses {
 		HttpServletResponse httpRes = (HttpServletResponse) response;
 		// Check if session exists
 		HttpSession session = httpReq.getSession(false);
-		System.out
-				.println("SessionCheckFilter.doFilter() session : " + session);
+		log.debug("Session " + session);
 		if (session == null) {
 			chain.doFilter(request, response);
 			// System.out
@@ -55,7 +52,7 @@ public class NotSignedInFilter implements Filter, Addresses {
 				httpRes.sendRedirect(HOME_SERVLET);
 				return;
 			}
-			System.out.println("user : " + user);
+			log.debug("user : " + user);
 			RequestDispatcher rd;
 			if (user.getRole() != RolesENUM.ADMIN) {
 				rd = session.getServletContext().getRequestDispatcher(
