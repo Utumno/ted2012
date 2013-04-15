@@ -24,8 +24,9 @@ for the DB. Default :
 		removeAbandoned="true" removeAbandonedTimeout="60" />
 </Context>
 ````
-
-Instructions to reproduce [jstl - el - read element from map](http://stackoverflow.com/q/12872965/281545)
+### My personal garden of bugs
+Instructions to reproduce [jstl - el - read element from map](http://stackoverflow.com/q/12872965/281545) ->
+[solved](http://stackoverflow.com/a/16001675/281545)
 
 5. Launch in eclipse > login as admin (username: ted2012 - pass: ted2012) >
  Project List > Create project > fill the fields in (like djufgjdg) > hit
@@ -34,7 +35,7 @@ Instructions to reproduce [jstl - el - read element from map](http://stackoverfl
 ```Το project δημιουργήθηκε επιτυχώς ``` 
 while JSTL no
 
-The Bug solved in <http://stackoverflow.com/a/15745520/281545> :
+The Bug solved in [eclipse vs tomcat deployment](http://stackoverflow.com/a/15745520/281545) :
 
 5. Launch in eclipse > register an account with greek username IN ECLIPSE > login
 as admin (username: ted2012 - pass: ted2012) > visit the profile of the user.

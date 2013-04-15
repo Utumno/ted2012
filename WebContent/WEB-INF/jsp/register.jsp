@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@ include file="include/top.jsp"%>
+<%@ include file="include/top_session_false.jsp"%>
 <title>Εγγραφή Χρήστη</title>
 <%@ include file="include/head.jsp"%>
 <%@ include file="include/no_menu.jsp"%>
