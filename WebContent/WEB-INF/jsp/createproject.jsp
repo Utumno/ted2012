@@ -1,7 +1,3 @@
-<%@page import="com.ted.domain.User.RolesENUM"%>
-<%@page import="com.ted.domain.User"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="include/tag_libs.jsp"%>
 <%@ include file="include/top.jsp"%>
@@ -35,117 +31,74 @@
 			<td>Δημόσιο/Ιδιωτικό</td>
 			<td><label for="publik"></label> <select name="publik"
 				id="publik">
-					<%
-						String publik = (String) request.getAttribute("publik");
-					%>
-					<option <%if (publik != null && publik.equals("private")) {%>
-						selected="selected" <%}%> value="private">Ιδιωτικό</option>
-					<option <%if (publik != null && publik.equals("publik")) {%>
-						selected="selected" <%}%> value="publik">Δημόσιο</option>
+					<option ${ publik == 'private' ? 'selected':'' } value="private">Ιδιωτικό</option>
+					<option ${ publik == 'publik' ? 'selected':'' } value="publik">Δημόσιο</option>
 			</select></td>
 			<td class="error"><c:choose>
 					<c:when test="${requestScope.emptyPublik != null}">Το πεδίο είναι υποχρεωτικό</c:when>
 				</c:choose></td>
 		</tr>
 		<tr>
-			<%
-				String selectedManager = (String) request
-							.getAttribute("selectedManager");
-					List<String> allManagers = (List<String>) request
-							.getAttribute("allManagers");
-			%>
 			<td>Υπεύθυνος Έργου</td>
-
-			<td>
-				<%
-					if (allManagers.size() > 0) {
-				%> <select name="manager" id="manager">
-					<%
-						for (int i = 0; i < allManagers.size(); i++) {
-									if (i == 0 && selectedManager == null) {
-					%>
-					<option selected="selected" value="<%=allManagers.get(i)%>"><%=allManagers.get(i)%></option>
-					<%
-						} else {
-					%>
-					<option
-						<%if (selectedManager != null
-									&& selectedManager.equals(allManagers
-											.get(i))) {%>
-						selected="selected" <%}%> value="<%=allManagers.get(i)%>"><%=allManagers.get(i)%></option>
-					<%
-						}
-								}
-					%>
-			</select> <%
- 	} else {
- %> Δεν υπάρχουν διαθέσιμοι managers <%
- 	}
- %>
-			</td>
+			<td><c:choose>
+					<c:when test="${not empty allManagers}">
+						<c:set var="selectedMan"
+							value="${not empty selectedManager ? selectedManager : allManagers[0]}"></c:set>
+						<%-- <c:out value="${selectedMan}"></c:out> --%>
+						<select name="manager" id="manager">
+							<c:forEach var="man" items="${allManagers}">
+								<option value="${man}" ${selectedMan == man ? 'selected':''}>
+									<c:out value="${man}" />
+								</option>
+							</c:forEach>
+						</select>
+						<c:remove var="selectedMan" />
+					</c:when>
+					<c:otherwise>Δεν υπάρχουν διαθέσιμοι managers
+					</c:otherwise>
+				</c:choose></td>
 			<td class="error"><c:choose>
 					<c:when test="${requestScope.emptyManager != null}">Το πεδίο είναι υποχρεωτικό</c:when>
 				</c:choose></td>
 		</tr>
 		<tr>
 			<td valign="top">Προσωπικό</td>
-			<td>
-				<%
-					List<String> addedStaff = (List<String>) request
-								.getAttribute("addedStaff");
-						List<String> allStaff = (List<String>) request
-								.getAttribute("allStaff");
-						if (addedStaff.size() > 0) {
-				%>
-				<table name="addedStaff" width="100%" border="1">
-
-					<%
-						for (int i = 0; i < addedStaff.size(); i++) {
-					%>
-					<tr>
-						<td><input type="hidden" name="added"
-							value="<%=addedStaff.get(i)%>" /><%=addedStaff.get(i)%></td>
-					</tr>
-					<%
-						}
-					%>
-				</table> <%
- 	} else {
- %> Δεν έχει προστεθεί προσωπικό <%
- 	}
- %>
-			</td>
+			<td><c:choose>
+					<c:when test="${empty addedStaff}">Δεν έχει προστεθεί προσωπικό</c:when>
+					<c:otherwise>
+						<table width="100%" border="1">
+							<c:forEach var="staf" items="${addedStaff}">
+								<tr>
+									<td><input type="hidden" name="added" value="${staf}" />
+										<c:out value="${staf}" /></td>
+								</tr>
+							</c:forEach>
+						</table>
+					</c:otherwise>
+				</c:choose></td>
 			<td class="error"><c:choose>
 					<c:when test="${requestScope.emptyStaff != null}">Το πεδίο είναι υποχρεωτικό</c:when>
 				</c:choose></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td>
-				<%
-					if (allStaff.size() > 0) {
-				%> <select name="staffMember" id="staffMember">
-					<%
-						for (int i = 0; i < allStaff.size(); i++) {
-					%>
-					<option value="<%=allStaff.get(i)%>">
-						<%=allStaff.get(i)%></option>
-					<%
-						}
-					%>
-			</select>
-			</td>
-			<td><input type="submit" name="addStaff" id="addStaff"
-				value="Add Staff" /></td>
-			<%
-				} else {
-			%>
-			Δεν υπάρχει διαθέσιμο προσωπικό
-			</td>
-			<td></td>
-			<%
-				}
-			%>
+			<c:choose>
+				<c:when test="${empty allStaff}">
+					<td>Δεν υπάρχει διαθέσιμο προσωπικό</td>
+					<td></td>
+				</c:when>
+				<c:otherwise>
+					<td><select name="staffMember" id="staffMember">
+							<c:forEach var="staf" items="${allStaff}">
+								<option value="${staf}">
+									<c:out value="${staf}" />
+								</option>
+							</c:forEach>
+					</select></td>
+					<td><input type="submit" name="addStaff" id="addStaff"
+						value="Add Staff" /></td>
+				</c:otherwise>
+			</c:choose>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
