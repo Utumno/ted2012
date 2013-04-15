@@ -34,13 +34,8 @@
 				<c:when test="${admin }">
 					<td><label for="publik"></label> <select name="publik"
 						id="publik">
-							<%
-								String publik = (String) request.getAttribute("publik");
-							%>
-							<option <%if (publik.equals("private")) {%> selected="selected"
-								<%}%> value="private">Ιδιωτικό</option>
-							<option <%if (publik.equals("publik")) {%> selected="selected"
-								<%}%> value="publik">Δημόσιο</option>
+							<option ${ publik == 'private' ? 'selected':'' } value="private">Ιδιωτικό</option>
+							<option ${ publik == 'publik' ? 'selected':'' } value="publik">Δημόσιο</option>
 					</select></td>
 					<td class="error"><c:choose>
 							<c:when test="${requestScope.emptyPublik != null}">Το πεδίο είναι υποχρεωτικό</c:when>
@@ -106,7 +101,7 @@
 				<td>&nbsp;</td>
 				<td><input type="submit" name="updateProject"
 					id="updateProject" value="Ενημέρωση Έργου" /></td>
-				<td>&nbsp;</td>					
+				<td>&nbsp;</td>
 			</tr>
 		</c:if>
 	</table>
@@ -122,8 +117,7 @@
 <c:choose>
 	<c:when test="${empty jobs}">Δεν υπάρχουν εργασίες για το έργο αυτό</c:when>
 	<c:otherwise>
-		<form action="deletejob"
-			method="post" name="deleteJob">
+		<form action="deletejob" method="post" name="deleteJob">
 			<table style="width: 200">
 				<tr>
 					<th class="tables" scope="col">A/A</th>
@@ -132,7 +126,8 @@
 					<th class="tables" scope="col">Κατάσταση</th>
 					<c:if test="${projectManager}">
 						<td class="hidden" scope="col"><input name="deleteJobsButton"
-							type="submit" value="Διαγραφή" /><input type="hidden" value="${name}" name="project" /></td>
+							type="submit" value="Διαγραφή" /><input type="hidden"
+							value="${name}" name="project" /></td>
 					</c:if>
 				</tr>
 				<c:forEach var="job" items="${jobs}" varStatus="i">
@@ -157,12 +152,12 @@
 </c:choose>
 <c:if test="${projectManager}">
 	<div align="center">
-	<form id="createJobForm" name="createJobForm" method="post"
-		action="createjob">
-		<input type="hidden" value="${name}" name="project" /> <input
-			type="submit" name="gotoCreateJob" id="gotoCreateJob"
-			value="Δημιουργία Εργασίας" />
-	</form>
+		<form id="createJobForm" name="createJobForm" method="post"
+			action="createjob">
+			<input type="hidden" value="${name}" name="project" /> <input
+				type="submit" name="gotoCreateJob" id="gotoCreateJob"
+				value="Δημιουργία Εργασίας" />
+		</form>
 	</div>
 </c:if>
 <%@ include file="include/error_end.jsp"%>
