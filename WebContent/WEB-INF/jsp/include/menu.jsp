@@ -1,5 +1,3 @@
-<%@page import="com.ted.domain.User"%>
-<%@page import="com.ted.domain.User.*"%>
 <%@ include file="tag_libs.jsp"%>
 <c:choose>
 	<c:when test="${sessionScope.signedUser.role == 'ADMIN'}">
