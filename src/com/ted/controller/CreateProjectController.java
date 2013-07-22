@@ -45,7 +45,7 @@ public class CreateProjectController extends Controller {
 		List<String> addedStaff = new ArrayList<>();
 		if (addedStaff1 != null) {
 			// if addedStaff1 were null a null pointer exception would be thrown
-			addedStaff = Arrays.asList(addedStaff1);
+			addedStaff.addAll(Arrays.asList(addedStaff1));
 		}
 		name = request.getParameter("name");
 		description = request.getParameter("description");
